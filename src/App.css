@@ -783,3 +783,154 @@ transition-duration: 0.01ms !important;
 animation-duration: 0.01ms !important;
 }
 }
+
+/* =================================
+   MUNICIPALITIES EXPLORER
+================================= */
+
+.municipalities-section {
+  padding: 80px 6%;
+  background: #fbf8f6;
+}
+
+.municipalities-section .section-heading {
+  margin-bottom: 35px;
+}
+
+.municipalities-section .section-label {
+  color: #721c35;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.municipalities-section h2 {
+  color: #2b2023;
+  font-size: clamp(28px, 4vw, 42px);
+  margin: 15px 0;
+}
+
+.municipalities-section .section-heading p {
+  color: #777;
+  line-height: 1.8;
+  max-width: 650px;
+}
+
+.municipality-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.municipality-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 230px;
+  padding: 25px;
+  background: #ffffff;
+  border: 1px solid #eee4e6;
+  border-radius: 16px;
+  text-decoration: none;
+  color: #302329;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.municipality-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(75, 24, 43, 0.12);
+  border-color: #721c35;
+}
+
+.municipality-card .category-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #721c35;
+  background: #f7eaf0;
+  border-radius: 12px;
+  margin-bottom: 18px;
+}
+
+.municipality-card strong {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.municipality-card p {
+  color: #777;
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 0 0 18px;
+}
+
+.municipality-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #721c35;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: auto;
+}
+
+.municipality-card > svg:last-child {
+  display: none;
+}
+
+/* Arabic layout */
+
+.arabic .municipality-card {
+  align-items: flex-start;
+  text-align: right;
+}
+
+.arabic .municipality-link {
+  flex-direction: row-reverse;
+}
+
+/* Tablet */
+
+@media (max-width: 900px) {
+  .municipality-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .municipalities-section {
+    padding: 55px 20px;
+  }
+
+  .municipality-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .municipality-card {
+    min-height: 220px;
+    padding: 16px;
+    border-radius: 13px;
+  }
+
+  .municipality-card strong {
+    font-size: 15px;
+  }
+
+  .municipality-card p {
+    font-size: 12px;
+  }
+
+  .municipality-link {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 360px) {
+  .municipality-grid {
+    grid-template-columns: 1fr;
+  }
+}
