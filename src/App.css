@@ -934,3 +934,57 @@ animation-duration: 0.01ms !important;
     grid-template-columns: 1fr;
   }
 }
+/* Municipality Details View */
+
+.municipality-details {
+  margin: 30px 6%;
+  padding: 45px 30px;
+  background: #721c35;
+  color: #ffffff;
+  border-radius: 18px;
+  scroll-margin-top: 25px;
+}
+
+.municipality-details .section-label {
+  color: #f3cbd6;
+  letter-spacing: 2px;
+}
+
+.municipality-details h2 {
+  font-size: clamp(28px, 5vw, 42px);
+  margin: 18px 0;
+}
+
+.municipality-details p {
+  max-width: 650px;
+  line-height: 1.8;
+  color: #f5e9ed;
+}
+
+.municipality-detail-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 25px 0;
+  color: #ffffff;
+}
+
+.municipality-details .light-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  background: #ffffff;
+  color: #721c35;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .municipality-details {
+    margin: 20px;
+    padding: 28px 20px;
+  }
+}
