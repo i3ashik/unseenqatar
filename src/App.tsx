@@ -15,75 +15,79 @@ import {
   Waves,
   ChevronRight,
   ArrowLeft,
-  Clock,
-  Map,
-  Landmark,
+  Map
 } from "lucide-react";
-import "./App.css";
+
+import QatarMap from "./QatarMap";
+
+type Language = "en" | "ar";
+
+type Municipality = {
+  name: string;
+  arabic: string;
+  description: string;
+  arabicDescription: string;
+};
 
 type Destination = {
   name: string;
   arabic: string;
   category: string;
+  arabicCategory: string;
   location: string;
   municipality: string;
   image: string;
-  description: string;
-  arabicDescription: string;
-  highlights: string[];
-  arabicHighlights: string[];
-  mapQuery: string;
 };
 
-const municipalities = [
+const municipalities: Municipality[] = [
   {
     name: "Doha",
     arabic: "الدوحة",
-    description: "Discover Qatar's capital, with its museums, traditional markets, waterfront and modern skyline.",
-    arabicDescription: "اكتشف عاصمة قطر بما فيها من متاحف وأسواق تقليدية وواجهة بحرية وأفق عمراني حديث.",
+    description: "Discover Qatar's vibrant capital, where modern architecture meets traditional culture.",
+    arabicDescription: "اكتشف عاصمة قطر النابضة بالحياة، حيث تلتقي العمارة الحديثة بالثقافة التقليدية."
   },
   {
     name: "Al Rayyan",
     arabic: "الريان",
-    description: "Explore cultural attractions, sports landmarks and traditional experiences.",
-    arabicDescription: "استكشف المعالم الثقافية والرياضية والتجارب التقليدية.",
+    description: "Explore cultural attractions, sporting landmarks and beautiful landscapes.",
+    arabicDescription: "اكتشف المعالم الثقافية والرياضية والمناظر الطبيعية الجميلة."
   },
   {
     name: "Al Wakrah",
     arabic: "الوكرة",
-    description: "Enjoy coastal heritage, traditional architecture and peaceful seaside experiences.",
-    arabicDescription: "استمتع بالتراث الساحلي والهندسة المعمارية التقليدية والتجارب البحرية الهادئة.",
+    description: "Experience coastal charm, traditional markets and historic neighbourhoods.",
+    arabicDescription: "استمتع بسحر الساحل والأسواق التقليدية والأحياء التاريخية."
   },
   {
     name: "Al Khor and Al Thakhira",
     arabic: "الخور والذخيرة",
-    description: "Discover mangroves, islands and beautiful natural landscapes.",
-    arabicDescription: "اكتشف غابات المانغروف والجزر والمناظر الطبيعية الجميلة.",
+    description: "Discover mangroves, beaches and peaceful natural escapes.",
+    arabicDescription: "اكتشف أشجار القرم والشواطئ والوجهات الطبيعية الهادئة."
   },
   {
     name: "Al Shamal",
     arabic: "الشمال",
-    description: "Explore northern Qatar's history, archaeological sites and coastal scenery.",
-    arabicDescription: "استكشف تاريخ شمال قطر والمواقع الأثرية والمناظر الساحلية.",
+    description: "Explore northern Qatar's historic sites, beaches and hidden gems.",
+    arabicDescription: "استكشف المواقع التاريخية والشواطئ والجواهر المخفية في شمال قطر."
   },
   {
     name: "Umm Salal",
     arabic: "أم صلال",
-    description: "Discover historic towers, traditional heritage and local surroundings.",
-    arabicDescription: "اكتشف الأبراج التاريخية والتراث التقليدي والمناطق المحلية.",
+    description: "Discover historic forts, traditional heritage and quiet local places.",
+    arabicDescription: "اكتشف الحصون التاريخية والتراث التقليدي والأماكن المحلية الهادئة."
   },
   {
     name: "Al Daayen",
     arabic: "الظعاين",
-    description: "Explore modern urban destinations and coastal attractions.",
-    arabicDescription: "استكشف الوجهات الحضرية الحديثة والمعالم الساحلية.",
+    description: "Explore modern Lusail and the growing northern coastal area.",
+    arabicDescription: "استكشف لوسيل الحديثة والمناطق الساحلية الشمالية المتنامية."
   },
   {
     name: "Al Shahaniya",
     arabic: "الشحانية",
-    description: "Experience Qatar's desert landscapes, farms and camel racing heritage.",
-    arabicDescription: "استمتع بالمناظر الصحراوية والمزارع وتراث سباقات الهجن في قطر.",
-  },
+    description: "Experience desert landscapes, farms and traditional Qatari heritage.",
+    arabicDescription: "استمتع بالمناظر الصحراوية والمزارع والتراث القطري التقليدي."
+  }
 ];
 
 const destinations: Destination[] = [
@@ -91,264 +95,236 @@ const destinations: Destination[] = [
     name: "Souq Waqif",
     arabic: "سوق واقف",
     category: "Culture & Heritage",
+    arabicCategory: "الثقافة والتراث",
     location: "Doha",
     municipality: "Doha",
-    image: "https://images.unsplash.com/photo-1580834341580-8c17a3a630ca?auto=format&fit=crop&w=1200&q=85",
-    description: "Souq Waqif is one of Doha's best-known traditional markets. Explore its narrow streets, local shops, restaurants, spices and traditional architecture.",
-    arabicDescription: "يعد سوق واقف من أشهر الأسواق التقليدية في الدوحة. استكشف أزقته ومحلاته ومطاعمه وتوابله وعماراته التراثية.",
-    highlights: ["Traditional market streets", "Local restaurants and cafés", "Spices, crafts and souvenirs"],
-    arabicHighlights: ["أزقة السوق التقليدي", "المطاعم والمقاهي المحلية", "التوابل والحرف والهدايا التذكارية"],
-    mapQuery: "Souq Waqif Doha Qatar",
+    image: "https://images.unsplash.com/photo-1580834341580-8c17a3a630ca?auto=format&fit=crop&w=1000&q=85"
   },
   {
     name: "Katara Cultural Village",
     arabic: "الحي الثقافي كتارا",
     category: "Culture",
+    arabicCategory: "الثقافة",
     location: "Doha",
     municipality: "Doha",
-    image: "https://images.unsplash.com/photo-1512632578888-169bbbc64f33?auto=format&fit=crop&w=1200&q=85",
-    description: "Katara is a cultural destination featuring galleries, performance venues, restaurants and beautiful public spaces near the waterfront.",
-    arabicDescription: "كتارا وجهة ثقافية تضم المعارض الفنية والمسارح والمطاعم والمساحات العامة الجميلة بالقرب من الواجهة البحرية.",
-    highlights: ["Cultural exhibitions", "Amphitheatre and architecture", "Waterfront walks"],
-    arabicHighlights: ["المعارض الثقافية", "المدرج والهندسة المعمارية", "التنزه على الواجهة البحرية"],
-    mapQuery: "Katara Cultural Village Doha Qatar",
+    image: "https://images.unsplash.com/photo-1512632578888-169bbbc64f33?auto=format&fit=crop&w=1000&q=85"
   },
   {
     name: "The Pearl Qatar",
     arabic: "اللؤلؤة قطر",
     category: "Lifestyle",
+    arabicCategory: "أسلوب الحياة",
     location: "Doha",
     municipality: "Doha",
-    image: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1200&q=85",
-    description: "The Pearl is a waterfront destination known for its marinas, shopping, restaurants and Mediterranean-inspired architecture.",
-    arabicDescription: "اللؤلؤة وجهة بحرية تشتهر بالمراسي والتسوق والمطاعم والهندسة المعمارية المستوحاة من البحر الأبيض المتوسط.",
-    highlights: ["Marina promenades", "Restaurants and cafés", "Shopping and waterfront views"],
-    arabicHighlights: ["ممشى المارينا", "المطاعم والمقاهي", "التسوق والإطلالات البحرية"],
-    mapQuery: "The Pearl Qatar Doha",
-  },
-  {
-    name: "Inland Sea",
-    arabic: "خور العديد",
-    category: "Nature & Adventure",
-    location: "Southern Qatar",
-    municipality: "Al Wakrah",
-    image: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=1200&q=85",
-    description: "Khor Al Adaid is a remarkable natural landscape where the desert meets the sea. It is known for its sand dunes and guided desert adventures.",
-    arabicDescription: "خور العديد منطقة طبيعية مميزة حيث تلتقي الصحراء بالبحر، وتشتهر بالكثبان الرملية ورحلات المغامرات الصحراوية.",
-    highlights: ["Desert safari with a licensed operator", "Sand dunes", "Scenic coastal views"],
-    arabicHighlights: ["رحلات السفاري مع مشغل مرخص", "الكثبان الرملية", "الإطلالات الساحلية"],
-    mapQuery: "Khor Al Adaid Inland Sea Qatar",
+    image: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1000&q=85"
   },
   {
     name: "Purple Island",
     arabic: "جزيرة البنفسج",
     category: "Nature",
+    arabicCategory: "الطبيعة",
     location: "Al Khor",
     municipality: "Al Khor and Al Thakhira",
-    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85",
-    description: "Purple Island is a nature destination near Al Khor, known for its mangroves, walking trails and birdlife.",
-    arabicDescription: "جزيرة البنفسج وجهة طبيعية بالقرب من الخور، وتشتهر بأشجار المانغروف ومسارات المشي والطيور.",
-    highlights: ["Nature walks", "Mangrove surroundings", "Birdwatching"],
-    arabicHighlights: ["التنزه في الطبيعة", "مناطق أشجار المانغروف", "مراقبة الطيور"],
-    mapQuery: "Purple Island Al Khor Qatar",
+    image: "https://images.unsplash.com/photo-1500530851580-8c17a3a630ca?auto=format&fit=crop&w=1000&q=85"
   },
   {
     name: "Al Thakhira Mangroves",
     arabic: "غابات الذخيرة",
     category: "Nature",
+    arabicCategory: "الطبيعة",
     location: "Al Thakhira",
     municipality: "Al Khor and Al Thakhira",
-    image: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1200&q=85",
-    description: "The Al Thakhira mangroves offer a peaceful natural environment and an opportunity to discover Qatar's coastal ecosystem.",
-    arabicDescription: "توفر غابات الذخيرة بيئة طبيعية هادئة وفرصة لاكتشاف النظام البيئي الساحلي في قطر.",
-    highlights: ["Mangrove ecosystem", "Kayaking with suitable local operators", "Nature photography"],
-    arabicHighlights: ["النظام البيئي للمانغروف", "التجديف مع المشغلين المحليين", "التصوير الطبيعي"],
-    mapQuery: "Al Thakhira Mangroves Qatar",
+    image: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1000&q=85"
   },
   {
     name: "Al Wakrah Old Souq",
     arabic: "سوق الوكرة القديم",
     category: "Heritage",
+    arabicCategory: "التراث",
     location: "Al Wakrah",
     municipality: "Al Wakrah",
-    image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1200&q=85",
-    description: "Al Wakrah Old Souq is a coastal heritage area with traditional-style buildings, restaurants and seaside views.",
-    arabicDescription: "سوق الوكرة القديم منطقة تراثية ساحلية تضم مباني بطراز تقليدي ومطاعم وإطلالات بحرية.",
-    highlights: ["Traditional architecture", "Seaside restaurants", "Coastal walking areas"],
-    arabicHighlights: ["العمارة التقليدية", "مطاعم على البحر", "مناطق المشي الساحلية"],
-    mapQuery: "Al Wakrah Old Souq Qatar",
+    image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1000&q=85"
   },
   {
     name: "Al Zubarah Fort",
     arabic: "قلعة الزبارة",
     category: "History",
+    arabicCategory: "التاريخ",
     location: "Al Zubarah",
     municipality: "Al Shamal",
-    image: "https://images.unsplash.com/photo-1590073242678-70ee3fc28e8e?auto=format&fit=crop&w=1200&q=85",
-    description: "Al Zubarah is a historic archaeological area that offers insight into Qatar's pearling and trading past.",
-    arabicDescription: "الزبارة منطقة أثرية تاريخية تقدم لمحة عن تاريخ الغوص على اللؤلؤ والتجارة في قطر.",
-    highlights: ["Historic fort", "Archaeological heritage", "Cultural history"],
-    arabicHighlights: ["القلعة التاريخية", "التراث الأثري", "التاريخ الثقافي"],
-    mapQuery: "Al Zubarah Fort Qatar",
+    image: "https://images.unsplash.com/photo-1590073242678-70ee3fc28e8e?auto=format&fit=crop&w=1000&q=85"
   },
   {
     name: "Heenat Salma Farm",
     arabic: "مزرعة حينة سالمة",
     category: "Nature",
+    arabicCategory: "الطبيعة",
     location: "Al Shahaniya",
     municipality: "Al Shahaniya",
-    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=85",
-    description: "Heenat Salma is an agricultural and ecological destination focused on nature, sustainable living and local experiences. Check visitor access before travelling.",
-    arabicDescription: "حينة سالمة وجهة زراعية وبيئية تركز على الطبيعة والاستدامة والتجارب المحلية. تحقق من إمكانية الزيارة قبل الذهاب.",
-    highlights: ["Agricultural experiences", "Nature and sustainability", "Local food experiences"],
-    arabicHighlights: ["التجارب الزراعية", "الطبيعة والاستدامة", "تجارب الطعام المحلي"],
-    mapQuery: "Heenat Salma Farm Qatar",
+    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1000&q=85"
   },
   {
     name: "Al Shaqab",
     arabic: "الشقب",
     category: "Culture & Heritage",
+    arabicCategory: "الثقافة والتراث",
     location: "Al Rayyan",
     municipality: "Al Rayyan",
-    image: "https://images.unsplash.com/photo-1534307671665-3b3b3b3b3b3b?auto=format&fit=crop&w=1200&q=85",
-    description: "Al Shaqab is an equestrian centre that celebrates Qatar's Arabian horse heritage and equestrian culture. Check visiting arrangements before your trip.",
-    arabicDescription: "الشقب مركز للفروسية يحتفي بتراث الخيول العربية وثقافة الفروسية في قطر. تحقق من ترتيبات الزيارة قبل الذهاب.",
-    highlights: ["Arabian horse heritage", "Equestrian facilities", "Horse-related events"],
-    arabicHighlights: ["تراث الخيول العربية", "مرافق الفروسية", "فعاليات الخيول"],
-    mapQuery: "Al Shaqab Qatar",
+    image: "https://images.unsplash.com/photo-1534307671665-3b3b3b3b3b3b?auto=format&fit=crop&w=1000&q=85"
   },
   {
     name: "Lusail",
     arabic: "لوسيل",
     category: "Lifestyle",
+    arabicCategory: "أسلوب الحياة",
     location: "Lusail",
     municipality: "Al Daayen",
-    image: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1200&q=85",
-    description: "Lusail is a modern city with contemporary architecture, waterfront areas, entertainment and shopping destinations.",
-    arabicDescription: "لوسيل مدينة حديثة تضم عمارة معاصرة ومناطق بحرية ووجهات ترفيهية وتسوق.",
-    highlights: ["Modern city architecture", "Waterfront areas", "Shopping and entertainment"],
-    arabicHighlights: ["العمارة الحديثة", "المناطق البحرية", "التسوق والترفيه"],
-    mapQuery: "Lusail City Qatar",
-  },
+    image: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1000&q=85"
+  }
 ];
 
 const translations = {
   en: {
     home: "Home",
-    explore: "Explore Qatar",
-    destinations: "Destinations",
+    explore: "Explore",
+    map: "Explore Map",
     municipalities: "Municipalities",
-    hidden: "Hidden Gems",
-    stories: "Travel Stories",
-    heroTag: "EXPLORE THE EXTRAORDINARY",
+    destinations: "Destinations",
+    stories: "Stories",
+    heroLabel: "EXPLORE THE EXTRAORDINARY",
     heroTitle: "Discover Every Corner of Qatar",
     heroText: "Go beyond the ordinary. Explore hidden gems, breathtaking landscapes and unforgettable experiences across Qatar.",
-    discover: "DISCOVER QATAR",
-    featured: "Explore Amazing Places",
-    featuredText: "From beautiful coastlines to cultural treasures, find your next adventure.",
-    search: "Search destinations, places...",
-    start: "Start Exploring",
-    viewDetails: "Explore Details",
-    back: "Back",
-    location: "Location",
-    municipality: "Municipality",
-    highlights: "Things to Explore",
-    map: "Open in Google Maps",
+    searchPlaceholder: "Search destinations, places...",
+    exploreButton: "Start Exploring",
+    discoverTitle: "Discover Qatar",
+    discoverText: "From beautiful coastlines to cultural treasures, find your next adventure.",
+    municipalityTitle: "Explore by Municipality",
+    municipalityText: "Discover all eight municipalities of Qatar and explore what makes each area special.",
+    viewPlaces: "Explore Places",
+    destinationTitle: "Popular Destinations",
+    destinationText: "Explore some of the most fascinating places in Qatar.",
+    mapTitle: "Explore Qatar on the Map",
+    mapText: "Tap a location marker to discover places across Qatar.",
     hiddenTitle: "Find the Hidden Qatar",
-    hiddenText: "Discover lesser-known places, secret corners and unforgettable experiences waiting to be explored.",
-    storiesTitle: "Stories That Inspire You",
-    storiesText: "Travel guides, local experiences and stories that bring Qatar closer to you.",
-    food: "Taste Qatar",
-    culture: "Culture & Heritage",
+    hiddenText: "There is more to Qatar than meets the eye. Discover peaceful escapes, local favourites and places waiting to be explored.",
+    storiesTitle: "Stories & Experiences",
+    storiesText: "Get inspired by the places, people and experiences that make Qatar unique.",
+    culture: "Culture",
+    nature: "Nature",
+    food: "Food",
     adventure: "Adventure",
-    footer: "Discover Every Corner of Qatar.",
-    places: "Places to Explore",
-    noPlaces: "More destinations are coming soon.",
-    municipalityText: "Explore Qatar through its eight municipalities.",
-    allPlaces: "All Destinations",
+    footerText: "Discover the beauty, culture and hidden gems of Qatar.",
+    back: "Back to Municipalities",
+    placesToExplore: "Places to Explore",
+    noPlaces: "We're adding destinations for this municipality. Check back soon!",
+    location: "Qatar"
   },
   ar: {
     home: "الرئيسية",
-    explore: "اكتشف قطر",
-    destinations: "الوجهات",
+    explore: "استكشف",
+    map: "الخريطة",
     municipalities: "البلديات",
-    hidden: "أماكن مخفية",
-    stories: "قصص السفر",
-    heroTag: "اكتشف ما هو استثنائي",
+    destinations: "الوجهات",
+    stories: "القصص",
+    heroLabel: "اكتشف الأماكن الاستثنائية",
     heroTitle: "اكتشف كل زاوية في قطر",
-    heroText: "اكتشف الأماكن الخفية والمناظر الطبيعية الخلابة والتجارب التي لا تُنسى في جميع أنحاء قطر.",
-    discover: "اكتشف قطر",
-    featured: "اكتشف أماكن رائعة",
-    featuredText: "من السواحل الجميلة إلى الكنوز الثقافية، اكتشف مغامرتك القادمة.",
-    search: "ابحث عن الوجهات والأماكن...",
-    start: "ابدأ الاستكشاف",
-    viewDetails: "اكتشف التفاصيل",
-    back: "رجوع",
-    location: "الموقع",
-    municipality: "البلدية",
-    highlights: "أنشطة يمكنك استكشافها",
-    map: "افتح في خرائط جوجل",
-    hiddenTitle: "اكتشف قطر الخفية",
-    hiddenText: "اكتشف الأماكن الأقل شهرة والزوايا الجميلة والتجارب الفريدة.",
-    storiesTitle: "قصص تلهمك",
-    storiesText: "أدلة السفر والتجارب المحلية والقصص التي تقرب قطر إليك.",
-    food: "تذوق قطر",
-    culture: "الثقافة والتراث",
+    heroText: "اكتشف الجواهر المخفية والمناظر الطبيعية الخلابة والتجارب التي لا تُنسى في جميع أنحاء قطر.",
+    searchPlaceholder: "ابحث عن الوجهات والأماكن...",
+    exploreButton: "ابدأ الاستكشاف",
+    discoverTitle: "اكتشف قطر",
+    discoverText: "من السواحل الجميلة إلى الكنوز الثقافية، ابحث عن مغامرتك القادمة.",
+    municipalityTitle: "استكشف حسب البلدية",
+    municipalityText: "اكتشف البلديات الثماني في قطر وما يميز كل منطقة.",
+    viewPlaces: "استكشف الأماكن",
+    destinationTitle: "وجهات شهيرة",
+    destinationText: "اكتشف بعضًا من أكثر الأماكن روعة في قطر.",
+    mapTitle: "استكشف قطر على الخريطة",
+    mapText: "اضغط على أي موقع على الخريطة لاكتشاف الأماكن في قطر.",
+    hiddenTitle: "اكتشف قطر المخفية",
+    hiddenText: "هناك الكثير لاكتشافه في قطر. استمتع بالأماكن الهادئة والمفضلة المحلية والوجهات المميزة.",
+    storiesTitle: "القصص والتجارب",
+    storiesText: "استلهم من الأماكن والأشخاص والتجارب التي تجعل قطر فريدة.",
+    culture: "الثقافة",
+    nature: "الطبيعة",
+    food: "الطعام",
     adventure: "المغامرة",
-    footer: "اكتشف كل زاوية في قطر.",
-    places: "أماكن للاستكشاف",
-    noPlaces: "سيتم إضافة المزيد من الوجهات قريباً.",
-    municipalityText: "اكتشف قطر من خلال بلدياتها الثماني.",
-    allPlaces: "جميع الوجهات",
-  },
+    footerText: "اكتشف جمال قطر وثقافتها وجواهرها المخفية.",
+    back: "العودة إلى البلديات",
+    placesToExplore: "أماكن للاستكشاف",
+    noPlaces: "نعمل على إضافة وجهات لهذه البلدية. يرجى العودة قريبًا!",
+    location: "قطر"
+  }
 };
 
 function App() {
-  const [language, setLanguage] = useState<"en" | "ar">("en");
+  const [language, setLanguage] = useState<Language>("en");
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedMunicipality, setSelectedMunicipality] = useState<string | null>(null);
-  const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
 
   const isArabic = language === "ar";
   const t = translations[language];
 
+  const selectedPlace = municipalities.find(
+    (place) => place.name === selectedMunicipality
+  );
+
   const filteredDestinations = destinations.filter((place) => {
-    const term = search.trim().toLowerCase();
+    const query = search.toLowerCase();
+
     return (
-      !term ||
-      `${place.name} ${place.arabic} ${place.location} ${place.category} ${place.municipality}`
-        .toLowerCase()
-        .includes(term)
+      place.name.toLowerCase().includes(query) ||
+      place.arabic.includes(search) ||
+      place.location.toLowerCase().includes(query) ||
+      place.category.toLowerCase().includes(query) ||
+      place.municipality.toLowerCase().includes(query)
     );
   });
 
-  const municipalityPlaces = selectedMunicipality
-    ? destinations.filter((place) => place.municipality === selectedMunicipality)
-    : [];
+  const scrollTo = (id: string) => {
+    setMenuOpen(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
 
-  function showDestination(place: Destination) {
-    setSelectedDestination(place);
-    setSelectedMunicipality(null);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  function showMunicipality(name: string) {
+  const openMunicipality = (name: string) => {
     setSelectedMunicipality(name);
-    setSelectedDestination(null);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
+    setMenuOpen(false);
 
-  function goHome() {
-    setSelectedDestination(null);
+    setTimeout(() => {
+      document.getElementById("municipality-details")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }, 100);
+  };
+
+  const backToMunicipalities = () => {
     setSelectedMunicipality(null);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
+
+    setTimeout(() => {
+      document.getElementById("municipalities")?.scrollIntoView({
+        behavior: "smooth"
+      });
+    }, 100);
+  };
+
+  const openMapDestination = (name: string) => {
+    setSearch(name);
+    setTimeout(() => {
+      document.getElementById("destinations")?.scrollIntoView({
+        behavior: "smooth"
+      });
+    }, 100);
+  };
 
   return (
-    <div className={isArabic ? "app arabic" : "app"} dir={isArabic ? "rtl" : "ltr"}>
+    <div className={`app ${isArabic ? "arabic" : ""}`} dir={isArabic ? "rtl" : "ltr"}>
       <header className="site-header">
-        <a href="#home" className="logo" onClick={goHome}>
+        <a
+          href="#home"
+          className="logo"
+          onClick={() => setSelectedMunicipality(null)}
+        >
           <span className="logo-mark"><Compass size={27} /></span>
           <span className="logo-text">
             UNSEEN <strong>QATAR</strong>
@@ -356,295 +332,320 @@ function App() {
           </span>
         </a>
 
-        <nav className={menuOpen ? "nav-links active" : "nav-links"}>
-          <button onClick={() => { goHome(); setMenuOpen(false); }}>{t.home}</button>
-          <button onClick={() => { goHome(); setMenuOpen(false); document.getElementById("explore")?.scrollIntoView({ behavior: "smooth" }); }}>{t.explore}</button>
-          <button onClick={() => { goHome(); setMenuOpen(false); document.getElementById("destinations")?.scrollIntoView({ behavior: "smooth" }); }}>{t.destinations}</button>
-          <button onClick={() => { goHome(); setMenuOpen(false); document.getElementById("municipalities")?.scrollIntoView({ behavior: "smooth" }); }}>{t.municipalities}</button>
-          <button onClick={() => { goHome(); setMenuOpen(false); document.getElementById("hidden")?.scrollIntoView({ behavior: "smooth" }); }}>{t.hidden}</button>
-          <button onClick={() => { goHome(); setMenuOpen(false); document.getElementById("stories")?.scrollIntoView({ behavior: "smooth" }); }}>{t.stories}</button>
+        <nav className={`nav-links ${menuOpen ? "active" : ""}`}>
+          <button onClick={() => scrollTo("home")}>{t.home}</button>
+          <button onClick={() => scrollTo("discover")}>{t.explore}</button>
+          <button onClick={() => scrollTo("qatar-map")}>{t.map}</button>
+          <button onClick={() => scrollTo("municipalities")}>{t.municipalities}</button>
+          <button onClick={() => scrollTo("destinations")}>{t.destinations}</button>
+          <button onClick={() => scrollTo("stories")}>{t.stories}</button>
         </nav>
 
         <div className="header-actions">
-          <button className="language-button" onClick={() => setLanguage(isArabic ? "en" : "ar")}>
-            <Globe size={18} />
-            {isArabic ? "English" : "عربي"}
+          <button
+            className="language-button"
+            onClick={() => setLanguage(isArabic ? "en" : "ar")}
+            aria-label="Change language"
+          >
+            <Globe size={17} />
+            {isArabic ? "EN" : "عربي"}
           </button>
-          <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
-            {menuOpen ? <X size={27} /> : <Menu size={27} />}
+
+          <button
+            className="menu-button"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <X /> : <Menu />}
           </button>
         </div>
       </header>
 
       <main>
-        {selectedDestination ? (
-          <section className="destination-details">
-            <button className="back-button" onClick={goHome}>
+        <section className="hero-section" id="home">
+          <div className="hero-overlay"></div>
+
+          <div className="hero-content">
+            <span className="hero-label">
+              <Sparkles size={15} /> {t.heroLabel}
+            </span>
+
+            <h1>{t.heroTitle}</h1>
+            <p>{t.heroText}</p>
+
+            <div className="hero-search">
+              <Search size={20} />
+              <input
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder={t.searchPlaceholder}
+              />
+              <button onClick={() => scrollTo("destinations")}>
+                {t.exploreButton} <ArrowRight size={17} />
+              </button>
+            </div>
+          </div>
+
+          <div className="hero-bottom">
+            <span><MapPin size={15} /> {t.location}</span>
+            <span>01 / 08</span>
+          </div>
+        </section>
+
+        <section className="discover-section" id="discover">
+          <div className="section-heading">
+            <span className="section-label">{t.heroLabel}</span>
+            <h2>{t.discoverTitle}</h2>
+            <p>{t.discoverText}</p>
+          </div>
+
+          <div className="category-grid">
+            <article className="category-card">
+              <span className="category-icon"><Camera size={25} /></span>
+              <h3>{t.culture}</h3>
+            </article>
+
+            <article className="category-card">
+              <span className="category-icon"><Mountain size={25} /></span>
+              <h3>{t.nature}</h3>
+            </article>
+
+            <article className="category-card">
+              <span className="category-icon"><Utensils size={25} /></span>
+              <h3>{t.food}</h3>
+            </article>
+
+            <article className="category-card">
+              <span className="category-icon"><Waves size={25} /></span>
+              <h3>{t.adventure}</h3>
+            </article>
+          </div>
+        </section>
+
+        <section className="qatar-map-section" id="qatar-map">
+          <div className="section-heading">
+            <span className="section-label">
+              <Map size={15} /> EXPLORE QATAR
+            </span>
+            <h2>{t.mapTitle}</h2>
+            <p>{t.mapText}</p>
+          </div>
+
+          <QatarMap
+            language={language}
+            onSelect={openMapDestination}
+          />
+        </section>
+
+        <section className="municipalities-section" id="municipalities">
+          <div className="section-heading">
+            <span className="section-label">EXPLORE QATAR</span>
+            <h2>{t.municipalityTitle}</h2>
+            <p>{t.municipalityText}</p>
+          </div>
+
+          <div className="municipality-grid">
+            {municipalities.map((place, index) => (
+              <button
+                type="button"
+                className="category-card municipality-card"
+                key={place.name}
+                onClick={() => openMunicipality(place.name)}
+              >
+                <span className="category-icon"><MapPin size={23} /></span>
+
+                <strong>{isArabic ? place.arabic : place.name}</strong>
+
+                <p>
+                  {isArabic
+                    ? place.arabicDescription
+                    : place.description}
+                </p>
+
+                <span className="municipality-link">
+                  {t.viewPlaces} <ArrowRight size={15} />
+                </span>
+
+                <span className="municipality-number">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {selectedPlace && (
+          <section className="municipality-details" id="municipality-details">
+            <button className="back-button" onClick={backToMunicipalities}>
               <ArrowLeft size={17} /> {t.back}
             </button>
 
-            <div className="destination-detail-hero">
-              <img src={selectedDestination.image} alt={selectedDestination.name} />
-              <div className="destination-detail-overlay">
-                <span className="section-label">{selectedDestination.category}</span>
-                <h1>{isArabic ? selectedDestination.arabic : selectedDestination.name}</h1>
-                <span className="detail-location"><MapPin size={17} /> {selectedDestination.location}</span>
-              </div>
+            <span className="section-label">UNSEEN QATAR</span>
+
+            <h2>{isArabic ? selectedPlace.arabic : selectedPlace.name}</h2>
+
+            <p>
+              {isArabic
+                ? selectedPlace.arabicDescription
+                : selectedPlace.description}
+            </p>
+
+            <div className="municipality-detail-info">
+              <MapPin size={20} />
+              <span>{isArabic ? "دولة قطر" : "Qatar"}</span>
             </div>
 
-            <div className="destination-detail-content">
-              <div className="detail-main">
-                <span className="section-label">{t.discover}</span>
-                <h2>{isArabic ? selectedDestination.arabic : selectedDestination.name}</h2>
-                <p>
-                  {isArabic ? selectedDestination.arabicDescription : selectedDestination.description}
-                </p>
+            <div className="municipality-places">
+              <h3>{t.placesToExplore}</h3>
 
-                <h3>{t.highlights}</h3>
-                <ul className="highlight-list">
-                  {(isArabic ? selectedDestination.arabicHighlights : selectedDestination.highlights).map((item) => (
-                    <li key={item}><Sparkles size={17} /> {item}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <aside className="detail-sidebar">
-                <div className="detail-info-card">
-                  <span><MapPin size={18} /> {t.location}</span>
-                  <strong>{selectedDestination.location}</strong>
-                  <span><Landmark size={18} /> {t.municipality}</span>
-                  <strong>
-                    {isArabic
-                      ? municipalities.find((m) => m.name === selectedDestination.municipality)?.arabic
-                      : selectedDestination.municipality}
-                  </strong>
-                  <span><Compass size={18} /> Category</span>
-                  <strong>{selectedDestination.category}</strong>
-                  <a
-                    className="map-button"
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedDestination.mapQuery)}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <Map size={18} /> {t.map} <ArrowRight size={16} />
-                  </a>
-                </div>
-              </aside>
-            </div>
-
-            <section className="related-section">
-              <div className="section-heading">
-                <span className="section-label">{t.explore}</span>
-                <h2>{t.places}</h2>
-              </div>
               <div className="destination-grid">
                 {destinations
-                  .filter((place) => place.name !== selectedDestination.name && place.municipality === selectedDestination.municipality)
+                  .filter((place) => place.municipality === selectedPlace.name)
                   .map((place) => (
-                    <article className="destination-card" key={place.name} onClick={() => showDestination(place)}>
+                    <article className="destination-card" key={place.name}>
                       <div className="destination-image">
                         <img src={place.image} alt={place.name} loading="lazy" />
-                        <span className="place-category">{place.category}</span>
+                        <span className="place-category">
+                          {isArabic ? place.arabicCategory : place.category}
+                        </span>
                       </div>
+
                       <div className="destination-info">
-                        <span className="place-location"><MapPin size={14} /> {place.location}</span>
+                        <span className="place-location">
+                          <MapPin size={14} /> {place.location}
+                        </span>
                         <h3>{isArabic ? place.arabic : place.name}</h3>
-                        <span className="text-link">{t.viewDetails} <ArrowRight size={15} /></span>
                       </div>
                     </article>
                   ))}
               </div>
-            </section>
-          </section>
-        ) : selectedMunicipality ? (
-          <section className="municipality-details">
-            <button className="back-button" onClick={goHome}>
-              <ArrowLeft size={17} /> {t.back}
-            </button>
-            <span className="section-label">{t.municipalities}</span>
-            <h2>
-              {isArabic
-                ? municipalities.find((m) => m.name === selectedMunicipality)?.arabic
-                : selectedMunicipality}
-            </h2>
-            <p>
-              {isArabic
-                ? municipalities.find((m) => m.name === selectedMunicipality)?.arabicDescription
-                : municipalities.find((m) => m.name === selectedMunicipality)?.description}
-            </p>
 
-            <div className="municipality-detail-info">
-              <MapPin size={18} />
-              {selectedMunicipality}, Qatar
-            </div>
-
-            <div className="municipality-places">
-              <h3>{t.places}</h3>
-              <div className="destination-grid">
-                {municipalityPlaces.length > 0 ? municipalityPlaces.map((place) => (
-                  <article className="destination-card" key={place.name} onClick={() => showDestination(place)}>
-                    <div className="destination-image">
-                      <img src={place.image} alt={place.name} loading="lazy" />
-                      <span className="place-category">{place.category}</span>
-                    </div>
-                    <div className="destination-info">
-                      <span className="place-location"><MapPin size={14} /> {place.location}</span>
-                      <h3>{isArabic ? place.arabic : place.name}</h3>
-                      <span className="text-link">{t.viewDetails} <ArrowRight size={15} /></span>
-                    </div>
-                  </article>
-                )) : (
-                  <p className="municipality-empty">{t.noPlaces}</p>
-                )}
-              </div>
+              {destinations.filter(
+                (place) => place.municipality === selectedPlace.name
+              ).length === 0 && (
+                <p className="municipality-empty">{t.noPlaces}</p>
+              )}
             </div>
           </section>
-        ) : (
-          <>
-            <section className="hero-section" id="home">
-              <div className="hero-overlay" />
-              <div className="hero-content">
-                <span className="hero-label"><Sparkles size={17} /> {t.heroTag}</span>
-                <h1>{t.heroTitle}</h1>
-                <p>{t.heroText}</p>
-                <div className="hero-search">
-                  <Search size={22} />
-                  <input
-                    value={search}
-                    onChange={(event) => setSearch(event.target.value)}
-                    placeholder={t.search}
-                  />
-                  <button onClick={() => document.getElementById("destinations")?.scrollIntoView({ behavior: "smooth" })}>
-                    {t.start} <ArrowRight size={19} />
+        )}
+
+        <section className="destinations-section" id="destinations">
+          <div className="section-heading">
+            <span className="section-label">MUST VISIT PLACES</span>
+            <h2>{t.destinationTitle}</h2>
+            <p>{t.destinationText}</p>
+          </div>
+
+          <div className="destination-grid">
+            {filteredDestinations.map((place) => (
+              <article className="destination-card" key={place.name}>
+                <div className="destination-image">
+                  <img src={place.image} alt={place.name} loading="lazy" />
+                  <span className="place-category">
+                    {isArabic ? place.arabicCategory : place.category}
+                  </span>
+                </div>
+
+                <div className="destination-info">
+                  <span className="place-location">
+                    <MapPin size={14} /> {place.location}
+                  </span>
+
+                  <h3>{isArabic ? place.arabic : place.name}</h3>
+
+                  <button
+                    className="text-link"
+                    onClick={() => openMunicipality(place.municipality)}
+                  >
+                    {t.viewPlaces} <ChevronRight size={16} />
                   </button>
                 </div>
-              </div>
-              <div className="hero-bottom">
-                <span><MapPin size={17} /> Qatar</span>
-                <span>Discover Every Corner</span>
-              </div>
-            </section>
+              </article>
+            ))}
 
-            <section className="discover-section" id="explore">
-              <div className="section-heading">
-                <span className="section-label">{t.discover}</span>
-                <h2>{t.featured}</h2>
-                <p>{t.featuredText}</p>
-              </div>
+            {filteredDestinations.length === 0 && (
+              <p className="no-results">
+                No destinations found. Try another search.
+              </p>
+            )}
+          </div>
+        </section>
 
-              <div className="category-grid">
-                <a href="#destinations" className="category-card">
-                  <span className="category-icon"><Compass /></span>
-                  <h3>{t.explore}</h3>
-                </a>
-                <a href="#stories" className="category-card">
-                  <span className="category-icon"><Camera /></span>
-                  <h3>{t.stories}</h3>
-                </a>
-                <a href="#food" className="category-card">
-                  <span className="category-icon"><Utensils /></span>
-                  <h3>{t.food}</h3>
-                </a>
-                <a href="#hidden" className="category-card">
-                  <span className="category-icon"><Mountain /></span>
-                  <h3>{t.adventure}</h3>
-                </a>
-              </div>
-            </section>
+        <section className="hidden-section">
+          <div className="hidden-content">
+            <span className="section-label">GO BEYOND THE ORDINARY</span>
+            <h2>{t.hiddenTitle}</h2>
+            <p>{t.hiddenText}</p>
 
-            <section className="municipalities-section" id="municipalities">
-              <div className="section-heading">
-                <span className="section-label">{t.discover}</span>
-                <h2>{t.municipalities}</h2>
-                <p>{t.municipalityText}</p>
-              </div>
+            <button
+              onClick={() => scrollTo("municipalities")}
+              className="light-button"
+            >
+              {t.exploreButton} <ArrowRight size={17} />
+            </button>
+          </div>
+        </section>
 
-              <div className="municipality-grid">
-                {municipalities.map((place, index) => (
-                  <button
-                    className="category-card municipality-card"
-                    key={place.name}
-                    onClick={() => showMunicipality(place.name)}
-                  >
-                    <span className="municipality-number">{String(index + 1).padStart(2, "0")}</span>
-                    <span className="category-icon"><MapPin /></span>
-                    <strong>{isArabic ? place.arabic : place.name}</strong>
-                    <p>{isArabic ? place.arabicDescription : place.description}</p>
-                    <span className="municipality-link">{t.viewDetails} <ChevronRight size={15} /></span>
-                  </button>
-                ))}
-              </div>
-            </section>
+        <section className="stories-section" id="stories">
+          <div className="section-heading">
+            <span className="section-label">TRAVEL INSPIRATION</span>
+            <h2>{t.storiesTitle}</h2>
+            <p>{t.storiesText}</p>
+          </div>
 
-            <section className="destinations-section" id="destinations">
-              <div className="section-heading">
-                <span className="section-label">{t.discover}</span>
-                <h2>{t.featured}</h2>
-                <p>{t.featuredText}</p>
+          <div className="stories-grid">
+            <article className="story-card">
+              <img
+                src="https://images.unsplash.com/photo-1512632578888-169bbbc64f33?auto=format&fit=crop&w=900&q=85"
+                alt="Qatar culture"
+                loading="lazy"
+              />
+              <div>
+                <span>CULTURE</span>
+                <h3>Discover the cultural side of Qatar</h3>
               </div>
+            </article>
 
-              <div className="destination-grid">
-                {filteredDestinations.length > 0 ? filteredDestinations.map((place) => (
-                  <article className="destination-card" key={place.name} onClick={() => showDestination(place)}>
-                    <div className="destination-image">
-                      <img src={place.image} alt={place.name} loading="lazy" />
-                      <span className="place-category">{place.category}</span>
-                    </div>
-                    <div className="destination-info">
-                      <span className="place-location"><MapPin size={14} /> {place.location}</span>
-                      <h3>{isArabic ? place.arabic : place.name}</h3>
-                      <span className="text-link">{t.viewDetails} <ArrowRight size={15} /></span>
-                    </div>
-                  </article>
-                )) : (
-                  <p className="no-results">{t.noPlaces}</p>
-                )}
+            <article className="story-card">
+              <img
+                src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=85"
+                alt="Qatar nature"
+                loading="lazy"
+              />
+              <div>
+                <span>NATURE</span>
+                <h3>Find your peaceful escape</h3>
               </div>
-            </section>
+            </article>
 
-            <section className="hidden-section" id="hidden">
-              <div className="hidden-content">
-                <span className="section-label">{t.discover}</span>
-                <h2>{t.hiddenTitle}</h2>
-                <p>{t.hiddenText}</p>
-                <a href="#destinations" className="light-button">{t.start} <ArrowRight size={17} /></a>
+            <article className="story-card">
+              <img
+                src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=85"
+                alt="Qatar city"
+                loading="lazy"
+              />
+              <div>
+                <span>EXPERIENCES</span>
+                <h3>See Qatar from a new perspective</h3>
               </div>
-            </section>
-
-            <section className="stories-section" id="stories">
-              <div className="section-heading">
-                <span className="section-label">TRAVEL JOURNAL</span>
-                <h2>{t.storiesTitle}</h2>
-                <p>{t.storiesText}</p>
-              </div>
-              <div className="stories-grid">
-                <article className="story-card">
-                  <img src="https://images.unsplash.com/photo-1580834341580-8c17a3a630ca?auto=format&fit=crop&w=900&q=85" alt="Qatar heritage" loading="lazy" />
-                  <div><span>HERITAGE</span><h3>{t.culture}</h3></div>
-                </article>
-                <article className="story-card">
-                  <img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=900&q=85" alt="Qatar desert" loading="lazy" />
-                  <div><span>ADVENTURE</span><h3>{t.adventure}</h3></div>
-                </article>
-                <article className="story-card">
-                  <img src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=85" alt="Qatar waterfront" loading="lazy" />
-                  <div><span>FOOD & LIFESTYLE</span><h3>{t.food}</h3></div>
-                </article>
-              </div>
-            </section>
-          </>
-        )}
+            </article>
+          </div>
+        </section>
       </main>
 
       <footer className="site-footer">
         <div className="footer-brand">
-          <Compass size={28} />
+          <Compass size={30} />
           <span>UNSEEN <strong>QATAR</strong></span>
         </div>
-        <p>{t.footer}</p>
+
+        <p>{t.footerText}</p>
+
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} UNSEEN QATAR</span>
-          <span>Discover Every Corner of Qatar</span>
+          <span>
+            © {new Date().getFullYear()} UNSEEN QATAR. All rights reserved.
+          </span>
+          <span>Made to discover Qatar.</span>
         </div>
       </footer>
     </div>
