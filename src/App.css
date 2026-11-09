@@ -1399,3 +1399,70 @@ a {
     padding-top: 25px;
   }
 }
+
+/* INTERACTIVE QATAR MAP */
+
+.qatar-map-section {
+  padding: 75px 6%;
+  background: #fbf8f6;
+}
+
+.qatar-map-container {
+  width: 100%;
+  max-width: 1200px;
+  height: 480px;
+  margin: 35px auto 0;
+  overflow: hidden;
+  border: 1px solid #eadde1;
+  border-radius: 18px;
+  box-shadow: 0 12px 35px rgba(50, 20, 30, 0.08);
+}
+
+.qatar-leaflet-map {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.qatar-map-popup {
+  min-width: 140px;
+  text-align: center;
+}
+
+.qatar-map-popup strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #302329;
+  font-size: 14px;
+}
+
+.qatar-map-popup button {
+  padding: 9px 14px;
+  border: 0;
+  border-radius: 6px;
+  background: #721c35;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.qatar-map-popup button:hover {
+  background: #501326;
+}
+
+.arabic .qatar-map-popup {
+  direction: rtl;
+}
+
+@media (max-width: 700px) {
+  .qatar-map-section {
+    padding: 55px 15px;
+  }
+
+  .qatar-map-container {
+    height: 380px;
+    margin-top: 25px;
+    border-radius: 12px;
+  }
+}
